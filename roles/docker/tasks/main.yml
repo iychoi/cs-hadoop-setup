@@ -1,0 +1,41 @@
+---
+# file: roles/docker/tasks/main.yml
+
+- name: Install prerequisite packages
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+    cache_valid_time: 3600
+    state: present
+  with_items:
+    - apt-transport-https
+    - ca-certificates
+    - curl
+    - software-properties-common
+
+- name: Add the GPG key for the Docker repository
+  shell: "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -"
+
+- name: Add apt repo for Docker package
+  apt_repository:
+    repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
+    filename: "docker"
+    state: present
+
+- name: Install Docker-ce package
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+    cache_valid_time: 3600
+    state: present
+  with_items:
+    - docker-ce
+
+- name: Add users to Docker group
+  user:
+    name: "{{ item }}"
+    groups: docker
+    append: yes
+  with_items:
+    - iychoi
+    - jhh

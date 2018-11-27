@@ -1,0 +1,71 @@
+---
+# file: roles/common-prep/tasks/main.yml
+
+- name: Upgrade system to current using apt
+  apt:
+    upgrade: dist
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Register if a reboot is required
+  stat:
+    path: /var/run/reboot-required
+  register: reboot_required
+
+- name: Reboot if required
+  when: reboot_required.exists is defined
+  debug:
+    msg: "System will reboot"
+  notify:
+    - restart host
+    - wait for host
+
+- name: Install standard packages
+  apt:
+    pkg: "{{ item }}"
+    state: present
+    update_cache: yes
+    cache_valid_time: 3600
+  with_items:
+   - tmux
+   - vim
+   - wget
+   - unzip
+   - software-properties-common
+
+- name: Remove annoying default editors
+  apt:
+    pkg: "{{ item }}"
+    state: absent
+    update_cache: yes
+    cache_valid_time: 3600
+  with_items:
+   - nano
+   - jove
+
+- name: Enable vim syntax highlighting
+  lineinfile: dest=/etc/vim/vimrc regexp="^\s*syntax on" line="syntax on"
+
+- name: Configure tmux
+  copy:
+    src: tmux.conf
+    dest: "{{ ansible_user_dir }}/.tmux.conf"
+
+- name: Copy /etc/hosts
+  copy:
+    src: /etc/hosts
+    dest: /tmp/hosts
+    remote_src: true
+
+- name: Populate hosts from inventory
+  lineinfile: dest=/tmp/hosts regexp='.*{{ item }}$' line="{{ hostvars[item].ansible_default_ipv4.address }} {{item}}" state=present
+  when: hostvars[item].ansible_default_ipv4.address is defined
+  with_items: "{{ groups['all'] }}"
+
+- name: Populate aliases from inventory
+  lineinfile: dest=/tmp/hosts regexp='.*{{ hostvars[item].alias }}$' line="{{ hostvars[item].ansible_default_ipv4.address }} {{ hostvars[item].alias }}" state=present
+  when: hostvars[item].ansible_default_ipv4.address is defined and hostvars[item].alias is defined
+  with_items: "{{ groups['all'] }}"
+
+- name: Replace /etc/hosts
+  shell: "cat /tmp/hosts > /etc/hosts"

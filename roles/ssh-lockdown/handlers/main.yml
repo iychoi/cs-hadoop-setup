@@ -1,0 +1,7 @@
+---
+# sshd_lockdown/handlers/main.yml
+
+- name: restart-sshd
+  service:
+    name: ssh
+    state: restarted

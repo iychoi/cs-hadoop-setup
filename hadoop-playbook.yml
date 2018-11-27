@@ -1,0 +1,8 @@
+---
+# Install hadoop
+
+- hosts: hadoop
+  become: yes
+  roles:
+    - java8
+    #- hadoop

@@ -1,0 +1,25 @@
+---
+# file: roles/java8/tasks/main.yml
+
+- name: Add apt repo for Java8 package
+  apt_repository:
+    repo: "ppa:webupd8team/java"
+    filename: "java8"
+    state: present
+
+- name: Accept Java8 License
+  debconf:
+    name: "oracle-java8-installer"
+    question: "shared/accepted-oracle-license-v1-1"
+    value: "true"
+    vtype: "select"
+
+- name: Install Java8 package
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+    cache_valid_time: 3600
+    state: present
+  with_items:
+    - oracle-java8-installer
+    - oracle-java8-set-default
