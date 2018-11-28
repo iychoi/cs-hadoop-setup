@@ -1,10 +1,34 @@
 ---
 
 allowed_tcp_ports:
-  - 22
+  - 22 # ssh
 
 allowed_udp_ports: {}
 
 allowed_local_tcp_ports: {}
+#  - 8020 # HDFS namenode metadata operations
+#  - 9000 # HDFS namenode metadata operations
+#  - 50010 # HDFS data transfer
+#  - 50020 # HDFS slave metadata operations
+#  - 50090 # HDFS namenode checkpoint for metadata
+#  - 50070 # HDFS namenode Web UI
+#  - 50470 # HDFS namenode Web UI
+#  - 50075 # HDFS datanode Web UI
+#  - 50475 # HDFS datanode Web UI
+#  - 8088 # Hadoop Web UI
+#  - 8050 # YARN resource manager
+#  - 8042 # YARN node amanager webapp address
+#  - 8031 # YARN node manager
+#  - 8032 # YARN node manager
+#  - 8025 # YARN application submission
+#  - 8141 # YARN scheduler
+#  - 8030 # YARN scheduler
+#  - 45454 # YARN node manager
+#  - 10200 # YARN timeline server
+#  - 8188 # YARN timeline server webapp
+#  - 8190 # YARN timeline server webapp
+#  - 10020 # YARN JobHistory service
+#  - 19888 # YARN JobHistory service Web UI
 
-allowed_ip_ranges: {}
+allowed_ip_ranges:
+  - "172.17.0.0/16" # docker

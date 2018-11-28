@@ -14,23 +14,31 @@
   ufw: rule=allow port={{ item }} proto=tcp
   with_items: "{{ allowed_udp_ports }}"
 
-- name: Allow local network TCP ports
-  when: "{{ hostvars[ansible_fqdn]['ansible_'~item[1]]['ipv4']['network'] is defined }}"
+- name: Allow local network access
+  when: "{{ ('ipv4' in hostvars[inventory_hostname]['ansible_'~item]) and (hostvars[inventory_hostname]['ansible_'~item]['ipv4']['network'] is defined) }}"
   ufw:
-    rule=allow port={{ item[0] }} proto=tcp
-    src="{{ hostvars[ansible_fqdn]['ansible_'~item[1]]['ipv4']['network'] }}/{{ hostvars[ansible_fqdn]['ansible_'~item[1]]['ipv4']['netmask'] }}"
-  with_nested:
-    - "{{ allowed_local_tcp_ports }}"
+    rule=allow
+    src="{{ hostvars[inventory_hostname]['ansible_'~item]['ipv4']['network'] }}/{{ hostvars[inventory_hostname]['ansible_'~item]['ipv4']['netmask'] }}"
+  with_items:
     - "{{ ansible_interfaces | map('replace','-','_') | list }}"
 
-- name: Allow other ranges access to TCP ports
-  when: "{{ allowed_ip_ranges | length > 0 }}"
-  ufw:
-    rule=allow port={{ item[0] }} proto=tcp
-    src="{{ item[1] }}"
-  with_nested:
-    - "{{ allowed_local_tcp_ports }}"
-    - "{{ allowed_ip_ranges }}"
+#- name: Allow local network TCP ports
+#  when: "{{ ('ipv4' in hostvars[inventory_hostname]['ansible_'~item[1]]) and (hostvars[inventory_hostname]['ansible_'~item[1]]['ipv4']['network'] is defined) }}"
+#  ufw:
+#    rule=allow port={{ item[0] }} proto=tcp
+#    src="{{ hostvars[inventory_hostname]['ansible_'~item[1]]['ipv4']['network'] }}/{{ hostvars[inventory_hostname]['ansible_'~item[1]]['ipv4']['netmask'] }}"
+#  with_nested:
+#    - "{{ allowed_local_tcp_ports }}"
+#    - "{{ ansible_interfaces | map('replace','-','_') | list }}"
+
+#- name: Allow other ranges access to TCP ports
+#  when: "{{ allowed_ip_ranges | length > 0 }}"
+#  ufw:
+#    rule=allow port={{ item[0] }} proto=tcp
+#    src="{{ item[1] }}"
+#  with_nested:
+#    - "{{ allowed_local_tcp_ports }}"
+#    - "{{ allowed_ip_ranges }}"
 
 - name: Reject everything else
   ufw:
