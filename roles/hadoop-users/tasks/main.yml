@@ -99,3 +99,12 @@
     owner: "hadoop"
     group: "hadoop"
     mode: "0700"
+
+- name: Add users to Hadoop group
+  user:
+    name: "{{ item }}"
+    groups: hadoop
+    append: yes
+  with_items:
+    - iychoi
+    - jhh
