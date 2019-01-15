@@ -1,0 +1,5 @@
+---
+# roles/nagios/defaults/main.yml
+
+nagios_conf_dir: /etc/nagios/
+nagios_server: butler.opencloud.cs.arizona.edu
