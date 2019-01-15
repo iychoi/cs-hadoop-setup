@@ -1,0 +1,7 @@
+---
+# Install hadoop
+
+- hosts: hadoop
+  become: yes
+  roles:
+    - hadoop-conf

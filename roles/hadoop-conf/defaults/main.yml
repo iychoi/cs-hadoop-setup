@@ -1,0 +1,7 @@
+---
+# roles/hadoop-conf/defaults/main.yml
+
+# Hadoop config
+hadoop_home: /opt/hadoop
+hadoop_conf_dir: /opt/hadoop/etc/hadoop
+hadoop_scratch_dir: /disk2/hdfs_temp

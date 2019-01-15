@@ -1,0 +1,10 @@
+---
+# hadoop/tasks/main.yml
+
+# https://hadoop.apache.org/docs/r2.7.2/hadoop-project-dist/hadoop-common/SecureMode.html#User_Accounts_for_Hadoop_Daemons
+- name: Sync Hadoop configuration files
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ hadoop_conf_dir }}/{{ item }}"
+  with_items:
+    - core-site.xml
