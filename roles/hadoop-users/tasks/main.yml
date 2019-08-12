@@ -41,6 +41,8 @@
     path: "/tmp/hadoop.id_rsa"
     state: absent
   run_once: yes
+  vars:
+    ansible_become: no
 
 - name: Remove old RSA host key
   local_action:
@@ -48,6 +50,8 @@
     path: "/tmp/hadoop.id_rsa.pub"
     state: absent
   run_once: yes
+  vars:
+    ansible_become: no
 
 - name: Generate a new RSA host key
   local_action: command ssh-keygen -q -t rsa -C "" -N "" -f /tmp/hadoop.id_rsa
@@ -68,6 +72,8 @@
     path: "/tmp/hadoop.known_hosts"
     state: absent
   run_once: yes
+  vars:
+    ansible_become: no
 
 - name: Make known_hosts
   local_action: shell ssh-keyscan {{ item }} >> /tmp/hadoop.known_hosts
