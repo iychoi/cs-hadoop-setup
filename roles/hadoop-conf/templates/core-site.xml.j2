@@ -25,14 +25,13 @@
 		<name>hadoop.tmp.dir</name>
 		<value>{{ hadoop_scratch_dir }}</value>
 	</property>
-    <!-- FTP FS -->
-    <property>
-    	<name>fs.ftp.impl</name>
-    	<value>FTPFileSystem.FTPFileSystem</value>
-    	<description>FTP filesystem</description>
-    </property>
-    <property>
-    	<name>fs.ftp.passive</name>
-    	<value>true</value>
-    </property>
+    <!-- HTTPFS -->
+	<property>
+		<name>hadoop.proxyuser.hadoop.hosts</name>
+		<value>*</value>
+	</property>
+	<property>
+		<name>hadoop.proxyuser.hadoop.groups</name>
+		<value>*</value>
+	</property>
 </configuration>

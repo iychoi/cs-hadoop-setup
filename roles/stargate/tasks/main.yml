@@ -1,0 +1,107 @@
+---
+# hadoop/tasks/main.yml
+
+- name: Make dl_dir
+  file:
+    path: "{{ dl_dir }}"
+    state: directory
+
+- name: Download Stargate Server
+  get_url:
+    url: "{{ server_repo_url }}"
+    dest: "{{ dl_dir }}"
+    owner: hadoop
+    group: hadoop
+    mode: 0664
+  register: stargate_server_dl
+
+- name: Download Stargate HDFS Client
+  get_url:
+    url: "{{ hdfs_client_repo_url }}"
+    dest: "{{ dl_dir }}"
+    owner: hadoop
+    group: hadoop
+    mode: 0664
+  register: stargate_hdfs_client_dl
+
+- name: Clean Stargate home
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - "{{ stargate_home }}"
+
+- name: Make Stargate home
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: hadoop
+    group: hadoop
+    mode: 0755
+  with_items:
+    - "{{ stargate_home }}"
+
+- name: Uncompress Stargate
+  unarchive:
+    src: "{{ stargate_server_dl.dest }}"
+    dest: "{{ stargate_home }}"
+    remote_src: yes
+    owner: hadoop
+    group: hadoop
+    extra_opts: [--strip-components=1]
+
+- name: Uncompress Stargate HDFS Client
+  unarchive:
+    src: "{{ stargate_hdfs_client_dl.dest }}"
+    dest: "{{ hadoop_lib_dir }}"
+    remote_src: yes
+    owner: hadoop
+    group: hadoop
+    extra_opts: [--strip-components=1]
+
+- name: Set path for Hadoop
+  shell: "echo 'export STARGATE_HOME={{ stargate_home }}/bin' > /etc/profile.d/stargate.sh"
+
+- name: Set Stargate configuration files
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ stargate_conf_dir }}/{{ item }}"
+    owner: hadoop
+    group: hadoop
+    mode: 0644
+  with_items:
+    - java.util.logging.properties
+    - service_config.json
+    - env.sh
+    - cluster
+
+- name: Clean data dir
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - "{{ stargate_data_dir }}"
+    - "{{ stargate_log_dir }}"
+    - "{{ stargate_work_dir }}"
+    - "{{ stargate_storage_dir }}"
+
+- name: Make data dir
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: hadoop
+    group: hadoop
+    mode: 0775
+  with_items:
+    - "{{ stargate_data_dir }}"
+    - "{{ stargate_log_dir }}"
+    - "{{ stargate_work_dir }}"
+    - "{{ stargate_storage_dir }}"
+
+- name: Allow stargate firewall
+  ufw:
+    rule: allow
+    port: "{{ item }}"
+    proto: tcp
+  with_items:
+    - 31010

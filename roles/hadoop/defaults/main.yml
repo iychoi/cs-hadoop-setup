@@ -9,4 +9,3 @@ hadoop_home: /opt/hadoop
 hadoop_data_dir: /disk1/hdfs_data
 hadoop_scratch_dir: /disk2/hdfs_temp
 hadoop_conf_dir: /opt/hadoop/etc/hadoop
-hadoop_pid_dir: /var/run/hadoop

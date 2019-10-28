@@ -1,0 +1,21 @@
+---
+# roles/ignite/defaults/main.yml
+
+dl_dir: /opt/downloads
+java_home: /usr/lib/jvm/java-8-oracle
+
+hdfs_client_repo_url: http://www2.cs.arizona.edu/~iychoi/app/stargate/stargate-hdfs-client-release-1.0.tar.gz
+server_repo_url: http://www2.cs.arizona.edu/~iychoi/app/stargate/stargate-release-1.0.tar.gz
+
+stargate_home: /opt/stargate
+stargate_conf_dir: /opt/stargate/config
+stargate_data_dir: /disk1/stargate_data
+stargate_log_dir: /disk1/stargate_log
+stargate_bin_dir: /opt/stargate/bin
+stargate_storage_dir: /disk1/stargate_data/storage
+stargate_work_dir: /disk1/stargate_data/work
+stargate_log_file: /disk1/stargate_log/stargate.log
+
+hadoop_lib_dir: /opt/hadoop/share/hadoop/hdfs/lib
+
+stargate_memory_param: "-Xms1024m -Xmx2048m"

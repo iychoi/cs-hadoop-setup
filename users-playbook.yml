@@ -4,6 +4,4 @@
 - hosts: hadoop
   become: yes
   roles:
-    #- java8
-    - hadoop-users
-    - hadoop
+    - users

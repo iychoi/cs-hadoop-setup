@@ -2,4 +2,4 @@
 # roles/hadoop-users/defaults/main.yml
 
 # Hadoop config
-hadoop_user_home: /opt/hadoop_user
+hadoop_user_home: /home/hadoop

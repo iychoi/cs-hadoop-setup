@@ -8,3 +8,4 @@
     dest: "{{ hadoop_conf_dir }}/{{ item }}"
   with_items:
     - core-site.xml
+    - hdfs-site.xml

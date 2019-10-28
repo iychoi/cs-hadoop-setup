@@ -17,12 +17,27 @@
 <!-- Put site-specific property overrides in this file. -->
 
 <configuration>
-  <property>
+    <property>
 		<name>fs.defaultFS</name>
 		<value>hdfs://{{ groups['namenode'][0] }}:9000</value>
 	</property>
 	<property>
 		<name>hadoop.tmp.dir</name>
 		<value>{{ hadoop_scratch_dir }}</value>
+	</property>
+    <!-- HTTPFS -->
+	<property>
+		<name>hadoop.proxyuser.hadoop.hosts</name>
+		<value>*</value>
+	</property>
+	<property>
+		<name>hadoop.proxyuser.hadoop.groups</name>
+		<value>*</value>
+	</property>
+    <!-- Stargate -->
+	<property>
+		<name>fs.sgfs.impl</name>
+		<value>stargate.client.hdfs.StargateHDFS</value>
+		<description>Protocol mapping to StargateHDFS.</description>
 	</property>
 </configuration>

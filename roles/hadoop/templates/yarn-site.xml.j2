@@ -13,24 +13,32 @@
   limitations under the License. See accompanying LICENSE file.
 -->
 <configuration>
-  <property>
-    <name>yarn.nodemanager.aux-services</name>
-    <value>mapreduce_shuffle</value>
-  </property>
-  <property>
-    <name>yarn.nodemanager.hostname</name>
-    <value>{{ inventory_hostname }}</value>
-  </property>
-  <property>
-    <name>yarn.resourcemanager.hostname</name>
-    <value>{{ groups['namenode'][0] }}</value>
-  </property>
-  <property>
-    <name>yarn.nodemanager.resource.memory-mb</name>
-    <value>{{ (ansible_memtotal_mb * 0.8) | int }}</value>
-  </property>
-  <property>
-    <name>yarn.nodemanager.resource.cpu-vcores</name>
-    <value>{{ ansible_processor_vcpus - 2 }}</value>
-  </property>
+    <property>
+        <name>yarn.nodemanager.aux-services</name>
+        <value>mapreduce_shuffle</value>
+    </property>
+    <property>
+        <name>yarn.nodemanager.hostname</name>
+        <value>{{ inventory_hostname }}</value>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.hostname</name>
+        <value>{{ groups['namenode'][0] }}</value>
+    </property>
+    <property>
+        <name>yarn.nodemanager.resource.memory-mb</name>
+        <value>{{ (ansible_memtotal_mb * 0.8) | int }}</value>
+    </property>
+    <property>
+        <name>yarn.nodemanager.resource.cpu-vcores</name>
+        <value>{{ ansible_processor_vcpus - 2 }}</value>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.bind-host</name>
+        <value>0.0.0.0</value>
+    </property>
+    <property>
+        <name>yarn.nodemanager.bind-host</name>
+        <value>0.0.0.0</value>
+    </property>
 </configuration>

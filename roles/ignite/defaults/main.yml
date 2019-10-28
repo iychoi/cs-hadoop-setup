@@ -1,9 +1,0 @@
----
-# roles/ignite/defaults/main.yml
-
-dl_dir: /opt/downloads
-java_home: /usr/lib/jvm/java-8-oracle
-
-# Ignite config
-ignite_home: /opt/ignite
-ignite_data_dir: /opt/ignite/work
